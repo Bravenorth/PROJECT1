@@ -1,0 +1,19 @@
+{
+  "name": "idle-game-inventory",
+  "version": "0.0.1",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "react-dnd": "^16.0.1",
+    "react-dnd-html5-backend": "^16.0.1"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "^4.5.1",
+    "vite": "^5.1.4"
+  }
+}
