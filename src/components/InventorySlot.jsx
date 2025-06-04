@@ -2,14 +2,16 @@ import React from "react";
 import { useDrop } from "react-dnd";
 import DraggableItem from "./DraggableItem";
 
-export default function InventorySlot({ index, state }) {
-  const item = state.inventory[index];
+export default function InventorySlot({ index, state, isEmptySlot = false }) {
+  // Si isEmptySlot === true, on ne cherche pas d’item dans state.inventory
+  const item = isEmptySlot ? null : state.inventory[index];
+
   const [, drop] = useDrop({
     accept: "ITEM",
     drop: (dragged) => {
       const { index: draggedIndex, from, uid } = dragged;
       if (from === "equipment") {
-        // Déséquipe dans la pile existante si besoin, ou à cet index
+        // On veut déséquiper dans l’inventaire à la position “index”
         state.unequip(uid, index);
       }
     }
@@ -22,7 +24,7 @@ export default function InventorySlot({ index, state }) {
       title={item?.name || "Empty"}
       style={{ position: "relative" }}
     >
-      {item && (
+      {item ? (
         <>
           <DraggableItem
             item={item}
@@ -48,6 +50,9 @@ export default function InventorySlot({ index, state }) {
             </div>
           )}
         </>
+      ) : (
+        //! Slot vide : on peut afficher un carré vide, ou rien du tout.
+        null
       )}
     </div>
   );
