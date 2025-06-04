@@ -1,5 +1,18 @@
 import { useState } from "react";
 
+// 1. Définition des stats de base du personnage
+const defaultBaseStats = {
+  health: 100,
+  strength: 10,
+  dexterity: 10,
+  intelligence: 10,
+  physResist: 0,
+  magicResist: 0,
+  physDamage: 5,
+  magicDamage: 5,
+  hitChance: 5
+};
+
 const defaultEquip = {
   head: null,
   chest: null,
@@ -109,6 +122,24 @@ export default function useGameState() {
     });
   };
 
+  const getPlayerStats = () => {
+    // Commencer avec une copie des stats de base
+    const finalStats = { ...defaultBaseStats };
+
+    // Parcourir chaque slot d’équipement
+    Object.values(equipment).forEach((eqItem) => {
+      if (!eqItem) return;
+      // Pour chaque attribut du item, on l’additionne
+      Object.entries(eqItem.stats).forEach(([statKey, statValue]) => {
+        // Si cette stat n’existe pas déjà, l’init à 0
+        if (finalStats[statKey] == null) finalStats[statKey] = 0;
+        finalStats[statKey] += statValue;
+      });
+    });
+
+    return finalStats;
+  };
+
   const getEquipped = () => ({ ...equipment });
 
   return {
@@ -117,6 +148,7 @@ export default function useGameState() {
     addItem,
     equipItem,
     unequip,
-    getEquipped
+    getEquipped,
+    getPlayerStats
   };
 }

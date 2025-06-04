@@ -1,13 +1,44 @@
+/* ===========================================
+   Variables de couleurs
+=========================================== */
+:root {
+  --bg-color: #1a1a1a;
+  --text-color: #f0f0f0;
+  --border-color: #555;
+  --border-hover: #f8c85d;
+  --slot-bg: #2e2e2e;
+  --tooltip-bg: #222;
+  --tooltip-border: #888;
+  --stat-key-color: #aaa;
+  --stat-value-color: #6cf;
+  --panel-gap: 2rem;
+  --slot-size: 50px;
+  --equip-slot-size: 60px;
+  --grid-gap: 4px;
+  --tooltip-font-size: 0.8rem;
+  --tooltip-padding: 0.5rem;
+  --max-inventory-height: 300px;
+}
+
+/* ===========================================
+   Global / Disposition générale
+=========================================== */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
 body {
   font-family: sans-serif;
-  background: #1a1a1a;
-  color: #f0f0f0;
+  background-color: var(--bg-color);
+  color: var(--text-color);
   padding: 1rem;
 }
 
 .container {
   max-width: 900px;
-  margin: auto;
+  margin: 0 auto;
 }
 
 .buttons {
@@ -16,23 +47,107 @@ body {
 
 .panels {
   display: flex;
-  gap: 2rem;
+  gap: var(--panel-gap);
   flex-wrap: wrap;
 }
 
-.inventory .grid {
+/* ===========================================
+   Slot (inventaire & équipement)
+=========================================== */
+.slot {
+  position: relative;
+  background-color: var(--slot-bg);
+  border: 1px solid var(--border-color);
   display: flex;
-  flex-wrap: wrap;
-  max-height: 300px;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: border-color 0.2s ease;
+}
+
+.slot:hover {
+  border-color: var(--border-hover);
+}
+
+/* Tailles spécifiques */
+.inventory .slot {
+  width: var(--slot-size);
+  height: var(--slot-size);
+}
+
+.equipment .slot {
+  width: var(--equip-slot-size);
+  height: var(--equip-slot-size);
+}
+
+/* ===========================================
+   Inventory : conteneur principal et grille
+=========================================== */
+.inventory {
+  margin-top: 20px;
+  background-color: var(--slot-bg);
+  padding: 1rem;
+  border-radius: 4px;
+  width: 100%;
+  max-width: 400px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+}
+
+.inventory > h2 {
+  margin-bottom: 0.75rem;
+  font-size: 1.25rem;
+  border-bottom: 1px solid var(--border-color);
+  padding-bottom: 0.25rem;
+  color: var(--text-color);
+}
+
+.inventory .grid {
+  display: grid;
+  grid-template-columns: repeat(5, var(--slot-size));
+  gap: var(--grid-gap);
+  justify-content: center;
+  max-height: var(--max-inventory-height);
   overflow-y: auto;
-  padding: 4px;
-  gap: 4px;
+  padding: var(--grid-gap);
+}
+
+@media (max-width: 320px) {
+  .inventory .grid {
+    grid-template-columns: repeat(auto-fill, minmax(var(--slot-size), 1fr));
+  }
+}
+
+/* Slot vide pour inventaire */
+.inventory .slot.empty-slot {
+  background-color: transparent;
+  border-color: var(--border-color);
+}
+
+/* ===========================================
+   Équipement : conteneur principal et grille
+=========================================== */
+.equipment {
+  margin-top: 20px;
+  background-color: var(--slot-bg);
+  padding: 1rem;
+  border-radius: 4px;
+  width: 100%;
+  max-width: 400px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+}
+
+.equipment > h2 {
+  margin-bottom: 0.75rem;
+  font-size: 1.25rem;
+  border-bottom: 1px solid var(--border-color);
+  padding-bottom: 0.25rem;
+  color: var(--text-color);
 }
 
 .equipment .equip-grid {
   display: grid;
-  grid-template-columns: 60px 60px 60px;
-  grid-template-rows: repeat(5, 60px);
+  grid-template-columns: repeat(3, var(--equip-slot-size));
+  grid-template-rows: repeat(5, var(--equip-slot-size));
   gap: 6px;
   grid-template-areas:
     ".    head    ."
@@ -40,47 +155,37 @@ body {
     ".    hands    ."
     ".    legs    ."
     ".    feet    .";
-}
-
-
-.slot {
-  width: 50px;
-  height: 50px;
-  border: 1px solid #555;
-  display: flex;
-  align-items: center;
   justify-content: center;
-  background: #2e2e2e;
-  cursor: pointer;
-  position: relative;
+  margin-bottom: 0.5rem;
 }
 
-.equipment .slot {
-  width: 60px;
-  height: 60px;
+.equipment > small {
+  display: block;
+  margin-top: 0.5rem;
+  font-size: 0.8rem;
+  color: var(--stat-key-color);
+  text-align: center;
 }
 
-.slot:hover {
-  border-color: #f8c85d;
-}
-
+/* ===========================================
+   Tooltip
+=========================================== */
 .tooltip {
   position: absolute;
   z-index: 1000;
-  background: #222;
-  border: 1px solid #888;
-  padding: 0.5rem;
+  background-color: var(--tooltip-bg);
+  border: 1px solid var(--tooltip-border);
+  padding: var(--tooltip-padding);
   border-radius: 4px;
-  font-size: 0.8rem;
-  color: #f0f0f0;
+  font-size: var(--tooltip-font-size);
+  color: var(--text-color);
   max-width: 200px;
   pointer-events: none;
 }
 
 .tooltip ul {
   list-style: none;
-  padding: 0;
-  margin: 0.5rem 0 0;
+  margin-top: 0.5rem;
 }
 
 .tooltip li {
@@ -89,11 +194,80 @@ body {
   margin-bottom: 2px;
 }
 
+/* ===========================================
+   CharacterStats : mise en page en grille
+=========================================== */
+.character-stats {
+  margin-top: 20px;
+  background-color: var(--slot-bg);
+  padding: 1rem;
+  border-radius: 4px;
+  width: 100%;
+  max-width: 400px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+}
+
+.character-stats h2 {
+  margin-bottom: 0.75rem;
+  font-size: 1.25rem;
+  border-bottom: 1px solid var(--border-color);
+  padding-bottom: 0.25rem;
+  color: var(--text-color);
+}
+
+.stats-list {
+  list-style: none;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
+  gap: 0.5rem 1rem;
+  padding: 0;
+}
+
+.stats-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #3a3a3a;
+  padding: 0.5rem;
+  border-radius: 3px;
+}
+
+.stats-item:nth-child(odd) {
+  background-color: #333333;
+}
+
 .stat-key {
-  color: #aaa;
+  color: var(--stat-key-color);
+  font-size: 0.9rem;
 }
 
 .stat-value {
   font-weight: bold;
-  color: #6cf;
+  color: var(--stat-value-color);
+  font-size: 0.9rem;
+}
+
+/* ===========================================
+   Divers (boutons, utilitaires)
+=========================================== */
+button {
+  background-color: var(--slot-bg);
+  color: var(--text-color);
+  border: 1px solid var(--border-color);
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+  transition: background-color 0.2s ease, border-color 0.2s ease;
+}
+
+button:hover {
+  background-color: var(--bg-color);
+  border-color: var(--border-hover);
+}
+
+.empty-slot::after {
+  content: "";
+  display: block;
+  width: 100%;
+  height: 100%;
+  background-color: transparent;
 }
