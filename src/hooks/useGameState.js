@@ -3,14 +3,14 @@ import { useState } from "react";
 // 1. Définition des stats de base du personnage
 const defaultBaseStats = {
   health: 100,
-  strength: 10,
-  dexterity: 10,
-  intelligence: 10,
+  strength: 0,
+  dexterity: 0,
+  intelligence: 0,
   physResist: 0,
   magicResist: 0,
-  physDamage: 5,
-  magicDamage: 5,
-  hitChance: 5
+  physDamage: 0,
+  magicDamage: 0,
+  hitChance: 0
 };
 
 const defaultEquip = {

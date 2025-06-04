@@ -10,9 +10,9 @@ export default function DraggableItem({ item, from, index, slotKey }) {
     item: () => {
       const payload = {
         uid: item.uid,
-        index,               // c'est l'index dans inventory ou null si depuis équipement
+        index, // c'est l'index dans inventory ou null si depuis équipement
         from,
-        slotKey: slotKey || item.slot
+        slotKey: slotKey || item.slot,
       };
       console.log(
         "📦 Drag START",
@@ -30,8 +30,8 @@ export default function DraggableItem({ item, from, index, slotKey }) {
       );
     },
     collect: (monitor) => ({
-      isDragging: !!monitor.isDragging()
-    })
+      isDragging: !!monitor.isDragging(),
+    }),
   }));
 
   const handleMouseMove = (e) => {
@@ -52,10 +52,19 @@ export default function DraggableItem({ item, from, index, slotKey }) {
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
-        position: "relative"
+        position: "relative",
       }}
     >
-      {item.icon || item.name[0]}
+      {item.icon ? (
+        <img
+          src={`/assets/items/${item.icon}`}
+          alt={item.name}
+          style={{ maxWidth: "100%", maxHeight: "100%" }}
+        />
+      ) : (
+        item.name[0]
+      )}
+
       {hoverPos && !isDragging && (
         <TooltipPortal item={item} position={hoverPos} />
       )}
